@@ -1,6 +1,6 @@
 <template>
     <div class="app">
-      <h1>Calculadora de Compras</h1>
+      <h1>CÚCUTA DEPORTIVO</h1>
       <div class="container">
         <div class="input-section">
           <div class="input-box">
