@@ -18,6 +18,7 @@
           <button @click="addItem">Agregar Artículo</button>
         </div>
         <div class="product-list">
+          <h2>Productos Agregados</h2>
           <table>
             <thead>
               <tr>
@@ -42,7 +43,7 @@
           </table>
           <div class="total">
             <p>Total de la Compra: ${{ calculateTotal() }}</p>
-            <p>Descuento: ${{ calculateDiscount() }}</p>
+            <p>Descuento: {{ calculateDiscountPercentage() }}%</p> <!-- Mostrar el porcentaje de descuento -->
             <p>Total a Pagar: ${{ calculateTotalWithDiscount() }}</p>
           </div>
         </div>
@@ -84,33 +85,90 @@
         }
         return total.toFixed(2);
       },
-      calculateDiscount() {
+      calculateDiscountPercentage() {
         let totalQuantity = 0;
         let totalAmount = 0;
         for (const product of this.products) {
           totalQuantity += product.quantity;
           totalAmount += product.quantity * product.price;
         }
-        let discount = 0;
+        let discountPercentage = 0;
         if (totalQuantity >= 12) {
-          discount = 0.2; // 20% discount for 12 or more items
+          discountPercentage = 20; // 20% discount for 12 or more items
         } else if (totalQuantity >= 6) {
-          discount = 0.1; // 10% discount for 6 or more items
+          discountPercentage = 10; // 10% discount for 6 or more items
         } else if (totalAmount >= 240000) {
-          discount = 0.15; // 15% discount for total amount >= 240,000
+          discountPercentage = 15; // 15% discount for total amount >= 240,000
         } else if (totalAmount >= 120000) {
-          discount = 0.1; // 10% discount for total amount >= 120,000
+          discountPercentage = 10; // 10% discount for total amount >= 120,000
         } else if (totalAmount >= 60000) {
-          discount = 0.05; // 5% discount for total amount >= 60,000
+          discountPercentage = 5; // 5% discount for total amount >= 60,000
         }
-        return (totalAmount * discount).toFixed(2);
+        return discountPercentage;
       },
       calculateTotalWithDiscount() {
         const totalAmount = parseFloat(this.calculateTotal());
-        const discount = parseFloat(this.calculateDiscount());
+        const discount = (parseFloat(this.calculateDiscountPercentage()) / 100) * totalAmount;
         return (totalAmount - discount).toFixed(2);
       },
     },
   };
   </script>
+  
+  <style scoped>
+  .app {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .input-section {
+    background-color: #0000005b;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .input-box {
+    margin-bottom: 10px;
+  }
+  
+  button {
+    background-color: #363636;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #b30000;
+  }
+  
+  .product-list table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .product-list th, .product-list td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .product-list th {
+    background-color: #000000;
+  }
+  
+  .total {
+    margin-top: 20px;
+  }
+  </style>
   
